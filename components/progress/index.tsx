@@ -1,14 +1,9 @@
-import React, {
-  FunctionComponent,
-  PropsWithChildren,
-  useRef,
-  useEffect,
-} from "react";
+import React, { FunctionComponent, PropsWithChildren } from "react";
 import { Dimensions, StyleProp, TextStyle, Text } from "react-native";
 import styled from "styled-components/native";
 import { ProgressBar, Button, useTheme } from "react-native-paper";
 import Animated, { Easing } from "react-native-reanimated";
-import { mixColor } from "react-native-redash";
+import { mixColor, useTimingTransition } from "react-native-redash";
 
 type ProggressProps = {
   steps: number;
@@ -51,8 +46,6 @@ const StyledButton = styled(Button).attrs((props: StyledButtonProps) => {
   padding-top: 5px;
   border: 2px;
   border-color: ${({ borderColor }: StyledButtonProps) => borderColor};
-  background-color: ${({ color, borderColor }: StyledButtonProps) =>
-    color ? color : borderColor};
 `;
 
 const AnymatedStyledButton = Animated.createAnimatedComponent(StyledButton);
@@ -60,36 +53,16 @@ const AnymatedStyledButton = Animated.createAnimatedComponent(StyledButton);
 const AnymatedBackgrounStyledButton: FunctionComponent<StyledButtonProps> = (
   props: PropsWithChildren<StyledButtonProps>
 ) => {
-  const animateBackground = useRef(new Animated.Value(0.0));
-  const baseColor = props.dark ? "black" : "white";
+  const animateBackground = useTimingTransition(props.selected, {
+    duration: 600,
+  });
   const { color, ...otherProps } = props;
-
-  const colorRefAnim = useRef(
-    Animated.timing(animateBackground.current, {
-      duration: 600,
-      toValue: 0.0,
-      easing: Easing.inOut(Easing.ease),
-    })
-  );
-
-  useEffect(() => {
-    const startValue = props.selected
-      ? new Animated.Value(0)
-      : new Animated.Value(1);
-    Animated.set(animateBackground.current, startValue);
-
-    colorRefAnim.current = Animated.timing(animateBackground.current, {
-      duration: 600,
-      toValue: props.selected ? 1 : 0,
-      easing: Easing.inOut(Easing.ease),
-    });
-    colorRefAnim.current.start();
-  }, [props.selected, color, baseColor]);
+  const baseColor = props.dark ? "black" : "white";
 
   return (
     <AnymatedStyledButton
       style={{
-        backgroundColor: mixColor(animateBackground.current, baseColor, color),
+        backgroundColor: mixColor(animateBackground, baseColor, color),
       }}
       {...otherProps}
     >

@@ -9,7 +9,12 @@ import {
   takeLatest,
 } from "redux-saga/effects";
 import * as actions from "../actions";
-import { GET_ALL_QUESTIONS, SET_ANSWER, POST_ANSWERS } from "../types/state";
+import {
+  GET_ALL_QUESTIONS,
+  SET_ANSWER,
+  POST_ANSWERS,
+  RESET_STATE,
+} from "../types/state";
 import { getAnswerMap, getQuestions } from "../reducers";
 import { api } from "../services";
 
@@ -49,10 +54,15 @@ export function* watchSetAnswer() {
   yield takeEvery(SET_ANSWER, validateAnswers);
 }
 
+export function* watchResetState() {
+  yield takeEvery(RESET_STATE, getAllQuestions);
+}
+
 export default function* root() {
   yield all([
     fork(watchGetQuestions),
     fork(watchSetAnswer),
     fork(watchPostAnswers),
+    fork(watchResetState),
   ]);
 }

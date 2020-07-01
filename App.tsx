@@ -11,6 +11,7 @@ import {
   DarkTheme,
   DefaultTheme,
   Provider as PaperProvider,
+  Portal,
 } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as StoreProvider } from "react-redux";
@@ -18,6 +19,7 @@ import Navigation from "./navigation";
 import rootSaga from "./sagas";
 import configureStore from "./store";
 import { RootState } from "./types/state";
+import ToastProvider from "./components/toast";
 
 const initialState: RootState = {};
 const { store, runSaga } = configureStore(initialState);
@@ -65,8 +67,10 @@ export default function App() {
     <StoreProvider store={store}>
       <PaperProvider theme={theme}>
         <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-          <StatusBar />
+          <ToastProvider>
+            <Navigation colorScheme={colorScheme} />
+            <StatusBar />
+          </ToastProvider>
         </SafeAreaProvider>
       </PaperProvider>
     </StoreProvider>

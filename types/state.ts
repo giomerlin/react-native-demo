@@ -20,6 +20,7 @@ export type QuestionsState = {
 
 export const GET_ALL_QUESTIONS = "GET_ALL_QUESTIONS";
 export const RECEIVE_QUESTIONS = "RECEIVE_QUESTIONS";
+export const RESET_STATE = "RESET_STATE";
 
 export type GetAllQuestionsAction = {
   type: typeof GET_ALL_QUESTIONS;
@@ -31,7 +32,14 @@ export type ReceiveQuestionsAction = {
   payload: any;
 };
 
-export type QuestionActionType = GetAllQuestionsAction | ReceiveQuestionsAction;
+export type ResetStateAction = {
+  type: typeof RESET_STATE;
+};
+
+export type QuestionActionType =
+  | GetAllQuestionsAction
+  | ReceiveQuestionsAction
+  | ResetStateAction;
 
 export const SET_ANSWER = "SET_ANSWER";
 export const VALIDATE_ANSWERS = "VALIDATE_ANSWERS";
@@ -78,7 +86,8 @@ export type AnswerActionType =
   | ValidateAnswerAction
   | ValidatedAnswerAction
   | PostAnswerAction
-  | ReceiveAnswerAckAction;
+  | ReceiveAnswerAckAction
+  | ResetStateAction;
 
 export type RootState = {
   questions?: QuestionsState;

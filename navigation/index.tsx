@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
 import QuestionsScreen from "../screens/Questions";
+import ThankYouScreen from "../screens/ThankYou";
 import { RootStackParamList } from "../types";
 
 export default function Navigation({
@@ -29,6 +30,7 @@ function RootNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Root" component={QuestionsScreen} />
+      <Stack.Screen name="ThankYou" component={ThankYouScreen} />
     </Stack.Navigator>
   );
 }

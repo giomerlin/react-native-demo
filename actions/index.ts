@@ -5,10 +5,12 @@ import {
   GetAllQuestionsAction,
   PostAnswerAction,
   AnswerMap,
+  RESET_STATE,
   RECEIVE_QUESTIONS,
   SetAnswerAction,
   ReceiveQuestionsAction,
   ValidatedAnswerAction,
+  ResetStateAction,
   VALIDATED,
   RECEIVE_ANSWERS_ACK,
   ReceiveAnswerAckAction,
@@ -40,4 +42,8 @@ export const answersValidated = (missing: number[]): ValidatedAnswerAction => {
 
 export const recieveAnswersAck = (response: any): ReceiveAnswerAckAction => {
   return { type: RECEIVE_ANSWERS_ACK, payload: response };
+};
+
+export const resetState = (): ResetStateAction => {
+  return { type: RESET_STATE };
 };

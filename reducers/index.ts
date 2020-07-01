@@ -11,6 +11,7 @@ import {
   RootState,
   QuestionActionType,
   AnswerActionType,
+  RESET_STATE,
 } from "../types/state";
 
 export const questionsReducer = (
@@ -32,7 +33,8 @@ export const questionsReducer = (
         items: payload.response?.questions || [],
         error: payload.error,
       };
-
+    case RESET_STATE:
+      return {};
     default:
       return state;
   }
@@ -75,6 +77,8 @@ export const answersReducer = (
         succeded: !action.payload.error,
         error: action.payload.error,
       };
+    case RESET_STATE:
+      return {};
     default:
       return state;
   }
