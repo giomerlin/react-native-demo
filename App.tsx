@@ -1,32 +1,31 @@
 import {
+  DarkTheme,
+  DefaultTheme,
+  Provider as PaperProvider,
+  configureFonts,
+} from "react-native-paper";
+import {
   Muli_300Light,
   Muli_400Regular,
   useFonts,
 } from "@expo-google-fonts/muli";
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, useColorScheme } from "react-native";
-import {
-  configureFonts,
-  DarkTheme,
-  DefaultTheme,
-  Provider as PaperProvider,
-  Portal,
-} from "react-native-paper";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import { Provider as StoreProvider } from "react-redux";
-import Navigation from "./navigation";
-import rootSaga from "./sagas";
-import configureStore from "./store";
 import { RootState } from "./types/state";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import { Provider as StoreProvider } from "react-redux";
+import { useColorScheme } from "react-native";
+import Navigation from "./navigation";
+import React from "react";
 import ToastProvider from "./components/toast";
+import configureStore from "./store";
+import rootSaga from "./sagas";
 
 const initialState: RootState = {};
 const { store, runSaga } = configureStore(initialState);
 runSaga(rootSaga);
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Muli_300Light,
     Muli_400Regular,
   });
@@ -76,12 +75,3 @@ export default function App() {
     </StoreProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

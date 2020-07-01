@@ -1,21 +1,22 @@
-import React, { FunctionComponent, useCallback, useState } from "react";
-import ToastContainer from "./toastContainer";
+import { ToastContext } from "./types";
 import { ToastType } from "./types";
-
-type ContextType = {
-  addToast: (content: any, timeout?: number) => void;
-  removeToast: (id: number) => void;
-};
-
-export const ToastContext = React.createContext<ContextType>({} as ContextType);
+import React, {
+  FunctionComponent,
+  PropsWithChildren,
+  useCallback,
+  useState,
+} from "react";
+import ToastContainer from "./toastContainer";
 
 let id = 1;
 
-export const ToastProvider: FunctionComponent = ({ children }) => {
+export const ToastProvider: FunctionComponent<unknown> = ({
+  children,
+}: PropsWithChildren<unknown>) => {
   const [toasts, setToasts] = useState<ToastType[]>([]);
 
   const addToast = useCallback(
-    (content: any, timeout: number = 3000) => {
+    (content: any, timeout = 3000) => {
       setToasts((toasts) => [
         ...toasts,
         {

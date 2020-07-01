@@ -1,7 +1,7 @@
-import React, { useState, PropsWithChildren } from "react";
 import { Snackbar } from "react-native-paper";
+import { useToast } from "./hooks";
+import React, { PropsWithChildren, useState } from "react";
 import styled from "styled-components/native";
-import { useToast } from ".";
 
 const StyledSnackBar = styled(Snackbar)``;
 

@@ -1,36 +1,36 @@
+import { SafeAreaView, View } from "react-native";
+import { Text, Title } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
 import React, {
+  RefObject,
   useCallback,
   useEffect,
-  useState,
   useRef,
-  RefObject,
+  useState,
 } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { SafeAreaView, View } from "react-native";
-import { Text, Title, Snackbar } from "react-native-paper";
 
 import * as actions from "../actions";
+import { AnswerMap, Question } from "../types/state";
 import { getAnswers, getQuestions } from "../reducers";
 import Loading from "../components/loading";
-import { Question, AnswerMap } from "../types/state";
 
 import PanelHeader from "../components/panelHeader";
 import Progress from "../components/progress";
 
 import styled from "styled-components/native";
 
+import { StackNavigationProp } from "@react-navigation/stack";
+import { useToast } from "../components/toast";
 import Answers from "../components/answers";
 import ButtonPanel from "../components/buttonPanel";
 import StyledButton from "../components/styledButton";
-import { useToast } from "../components/toast";
-import { StackNavigationProp } from "@react-navigation/stack";
 
+import { RootStackParamList } from "../types";
 import {
   Transition,
   Transitioning,
   TransitioningView,
 } from "react-native-reanimated";
-import { RootStackParamList } from "../types";
 
 type RootNavigationProp = StackNavigationProp<RootStackParamList, "Root">;
 
@@ -84,7 +84,7 @@ const Questions = ({ navigation }: { navigation: RootNavigationProp }) => {
       setCurrentStep(0);
     });
     return unsubscribe;
-  }, []);
+  }, [navigation]);
 
   useEffect(() => {
     dispatch(actions.getAllQuestions());
@@ -98,7 +98,7 @@ const Questions = ({ navigation }: { navigation: RootNavigationProp }) => {
       startTransition();
       setLoading(nextLoading);
     }
-  }, [questions]);
+  }, [loading, questions]);
 
   useEffect(() => {
     if (answersState?.succeded === true) {
@@ -108,11 +108,11 @@ const Questions = ({ navigation }: { navigation: RootNavigationProp }) => {
     if (answersState?.error) {
       addToast(answersState?.error);
     }
-  }, [answersState]);
+  }, [addToast, answersState, navigation]);
 
   const onSelectedAnswer = useCallback(
     (id) => {
-      let answerMap = {} as AnswerMap;
+      const answerMap = {} as AnswerMap;
       answerMap[currentQuestion.id] = parseInt(id);
       dispatch(actions.setAnswer(answerMap));
     },

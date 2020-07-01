@@ -1,14 +1,14 @@
-import {
-  NavigationContainer,
-  DefaultTheme,
-  DarkTheme,
-} from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import * as React from "react";
 import { ColorSchemeName } from "react-native";
+import {
+  DarkTheme,
+  DefaultTheme,
+  NavigationContainer,
+} from "@react-navigation/native";
+import { RootStackParamList } from "../types";
+import { createStackNavigator } from "@react-navigation/stack";
 import QuestionsScreen from "../screens/Questions";
 import ThankYouScreen from "../screens/ThankYou";
-import { RootStackParamList } from "../types";
 
 export default function Navigation({
   colorScheme,

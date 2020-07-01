@@ -1,7 +1,7 @@
+import { Headline, Subheading } from "react-native-paper";
+import { View } from "react-native";
 import React from "react";
 import styled from "styled-components/native";
-import { View } from "react-native";
-import { Headline, Subheading } from "react-native-paper";
 
 type PanelHeaderProps = {
   title: string;

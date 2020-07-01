@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
 import { Headline } from "react-native-paper";
-import { View, StyleProp, ViewStyle } from "react-native";
-import styled from "styled-components/native";
-import { useDispatch } from "react-redux";
-
+import { RootStackParamList } from "../types";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { resetState } from "../actions";
+import { useDispatch } from "react-redux";
+import React, { useEffect } from "react";
+import styled from "styled-components/native";
 
 const Wrapper = styled.View`
   flex: 1;
@@ -18,15 +18,17 @@ const Wrapper = styled.View`
 const StyledText = styled(Headline)`
   margin-top: 30px;
 `;
-import { RootStackParamList } from "../types";
-import { StackNavigationProp } from "@react-navigation/stack";
 
 type ThankYouNavigationProp = StackNavigationProp<
   RootStackParamList,
   "ThankYou"
 >;
 
-const ThankYou = ({ navigation }: { navigation: ThankYouNavigationProp }) => {
+const ThankYou = ({
+  navigation,
+}: {
+  navigation: ThankYouNavigationProp;
+}): JSX.Element => {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -34,7 +36,7 @@ const ThankYou = ({ navigation }: { navigation: ThankYouNavigationProp }) => {
       dispatch(resetState());
     });
     return unsubscribe;
-  }, []);
+  }, [dispatch, navigation]);
 
   return (
     <Wrapper>

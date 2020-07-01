@@ -1,18 +1,18 @@
-import { combineReducers } from "redux";
 import {
-  GET_ALL_QUESTIONS,
-  RECEIVE_QUESTIONS,
-  VALIDATED,
-  RECEIVE_ANSWERS_ACK,
-  SET_ANSWER,
-  POST_ANSWERS,
-  AnswersState,
-  QuestionsState,
-  RootState,
-  QuestionActionType,
   AnswerActionType,
+  AnswersState,
+  GET_ALL_QUESTIONS,
+  POST_ANSWERS,
+  QuestionActionType,
+  QuestionsState,
+  RECEIVE_ANSWERS_ACK,
+  RECEIVE_QUESTIONS,
   RESET_STATE,
+  RootState,
+  SET_ANSWER,
+  VALIDATED,
 } from "../types/state";
+import { combineReducers } from "redux";
 
 export const questionsReducer = (
   state: QuestionsState = {},
@@ -25,7 +25,7 @@ export const questionsReducer = (
         loading: true,
         items: [],
       };
-    case RECEIVE_QUESTIONS:
+    case RECEIVE_QUESTIONS: {
       const payload = action.payload;
       return {
         ...state,
@@ -33,6 +33,7 @@ export const questionsReducer = (
         items: payload.response?.questions || [],
         error: payload.error,
       };
+    }
     case RESET_STATE:
       return {};
     default:
@@ -45,7 +46,7 @@ export const answersReducer = (
   action: AnswerActionType
 ): AnswersState => {
   switch (action.type) {
-    case SET_ANSWER:
+    case SET_ANSWER: {
       const currentMap = state.answerMap || {};
       const answerMap = {
         ...currentMap,
@@ -56,6 +57,7 @@ export const answersReducer = (
         ...state,
         answerMap: answerMap,
       };
+    }
     case VALIDATED:
       return {
         ...state,

@@ -1,6 +1,6 @@
-import React from "react";
 import { ActivityIndicator, Text, useTheme } from "react-native-paper";
-import { View, StyleProp, ViewStyle } from "react-native";
+import { StyleProp, ViewStyle } from "react-native";
+import React from "react";
 import styled from "styled-components/native";
 
 const Wrapper = styled.View`

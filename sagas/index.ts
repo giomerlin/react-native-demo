@@ -1,3 +1,10 @@
+import * as actions from "../actions";
+import {
+  GET_ALL_QUESTIONS,
+  POST_ANSWERS,
+  RESET_STATE,
+  SET_ANSWER,
+} from "../types/state";
 import {
   all,
   call,
@@ -8,15 +15,8 @@ import {
   takeEvery,
   takeLatest,
 } from "redux-saga/effects";
-import * as actions from "../actions";
-import {
-  GET_ALL_QUESTIONS,
-  SET_ANSWER,
-  POST_ANSWERS,
-  RESET_STATE,
-} from "../types/state";
-import { getAnswerMap, getQuestions } from "../reducers";
 import { api } from "../services";
+import { getAnswerMap, getQuestions } from "../reducers";
 
 export function* getAllQuestions() {
   const questions = yield call(api.getQuestions);

@@ -1,13 +1,6 @@
-import { useContext } from "react";
-
-import { ToastContext, ToastProvider } from "./provider";
-import { ToastType } from "./types";
-
-const useToast = () => {
-  const toastHelpers = useContext(ToastContext);
-
-  return toastHelpers;
-};
+import { ToastContext, ToastType } from "./types";
+import { ToastProvider } from "./provider";
+import { useToast } from "./hooks";
 
 export { ToastContext, useToast, ToastType };
 export default ToastProvider;

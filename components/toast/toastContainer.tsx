@@ -1,8 +1,8 @@
-import React, { useCallback, useContext, useReducer, useRef } from "react";
-import styled from "styled-components/native";
-import { ToastType } from "./types";
-import Toast from "./toast";
 import { SafeAreaContext } from "react-native-safe-area-context";
+import { ToastType } from "./types";
+import React, { useContext } from "react";
+import Toast from "./toast";
+import styled from "styled-components/native";
 
 const Wrapper = styled.View`
   position: absolute;

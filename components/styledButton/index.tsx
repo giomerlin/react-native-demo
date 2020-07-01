@@ -1,9 +1,8 @@
-import React from "react";
-import { View, ViewProps } from "react-native";
-import styled from "styled-components/native";
 import { Button } from "react-native-paper";
-import Animated, { Easing } from "react-native-reanimated";
 import { useTimingTransition } from "react-native-redash";
+import Animated from "react-native-reanimated";
+import React from "react";
+import styled from "styled-components/native";
 
 type ToggleVisibilityButtonProps = typeof Button.defaultProps & {
   visible?: boolean;

@@ -1,9 +1,9 @@
-import React, { FunctionComponent, PropsWithChildren } from "react";
-import { Dimensions, StyleProp, TextStyle, Text } from "react-native";
-import styled from "styled-components/native";
-import { ProgressBar, Button, useTheme } from "react-native-paper";
-import Animated, { Easing } from "react-native-reanimated";
+import { Button, ProgressBar, useTheme } from "react-native-paper";
+import { Dimensions, StyleProp, TextStyle } from "react-native";
 import { mixColor, useTimingTransition } from "react-native-redash";
+import Animated from "react-native-reanimated";
+import React, { FunctionComponent, PropsWithChildren } from "react";
+import styled from "styled-components/native";
 
 type ProggressProps = {
   steps: number;
@@ -32,11 +32,9 @@ type StyledButtonProps = {
   labelStyle?: StyleProp<TextStyle>;
 };
 
-const StyledButton = styled(Button).attrs((props: StyledButtonProps) => {
-  return {
-    compact: true,
-    mode: "contained",
-  };
+const StyledButton = styled(Button).attrs({
+  compact: true,
+  mode: "contained",
 })`
   width: 50px;
   height: 50px;
@@ -76,8 +74,8 @@ const Progress = ({ steps, currentStep, onItemClick }: ProggressProps) => {
   const { dark, colors } = useTheme();
   const windowWidth = Dimensions.get("window").width;
 
-  let percentage: number = currentStep / (steps - 1);
-  let increment = 20.0 / windowWidth;
+  const percentage: number = currentStep / (steps - 1);
+  const increment = 20.0 / windowWidth;
 
   return (
     <Wrapper>

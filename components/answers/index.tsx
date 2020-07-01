@@ -1,19 +1,13 @@
-import React from "react";
-import styled from "styled-components/native";
-import { View } from "react-native";
 import { Answer } from "../../types/state";
 import { RadioButton } from "react-native-paper";
+import { View } from "react-native";
+import React from "react";
 
 type AnswersProps = {
   answers: Answer[];
   selectedAnswer?: number;
   onAnswerSelected?: (index: number) => void;
 };
-
-const RadioWrapperView = styled.View`
-  flex-direction: row;
-  margin: 5px 20px;
-`;
 
 const RadioButtonWrapper = ({ answer }: { answer: Answer }) => {
   return <RadioButton.Item label={answer.text} value={answer.id.toString()} />;
