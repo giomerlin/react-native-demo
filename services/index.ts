@@ -1,7 +1,7 @@
 import { AnswerMap } from "../types/state";
 import Constants from "expo-constants";
 
-const API_ROOT = Constants.manifest.extra.API_ROOT;
+const API_ROOT = Constants.manifest.extra?.API_ROOT || "/";
 
 export const api = {
   getQuestions() {
