@@ -168,6 +168,7 @@ const Questions = ({ navigation }: { navigation: RootNavigationProp }) => {
             <QuestionTitle>{currentQuestion.text}</QuestionTitle>
 
             <Answers
+              type="slide-left-right"
               answers={answers}
               onAnswerSelected={onSelectedAnswer}
               selectedAnswer={answerMap[currentQuestion.id]}

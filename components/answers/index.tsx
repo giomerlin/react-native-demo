@@ -2,6 +2,7 @@ import { Answer } from "../../types/state";
 import { RadioButton } from "react-native-paper";
 import { View } from "react-native";
 import React from "react";
+import withAnimation from "../../hocs/withAnimation";
 
 type AnswersProps = {
   answers: Answer[];
@@ -42,4 +43,4 @@ const Answers = ({
   );
 };
 
-export default Answers;
+export default withAnimation(Answers);
