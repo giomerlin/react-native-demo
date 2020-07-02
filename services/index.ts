@@ -1,16 +1,17 @@
 import { AnswerMap } from "../types/state";
-import { Platform } from "react-native";
-import Constants from "expo-constants";
 
-const API_ROOT =
-  (Platform.OS == "android"
-    ? Constants.manifest.extra?.API_ROOT_ANDROID
-    : Constants.manifest.extra?.API_ROOT) || "/";
+const API_ROOT = "http://localhost:5000/api/";
 
 export const api = {
   getQuestions() {
     const fullUrl = API_ROOT + "questions";
-    return fetch(fullUrl)
+
+    return fetch(fullUrl, {
+      method: "GET",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
       .then((response) => response.json().then((json) => ({ json, response })))
       .then(({ json, response }) => {
         if (!response.ok) {

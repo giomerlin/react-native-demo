@@ -1,5 +1,5 @@
 import { Button } from "react-native-paper";
-import { useTimingTransition } from "react-native-redash";
+import { useTimingTransition } from "../../redash/Transitions";
 import Animated from "react-native-reanimated";
 import React from "react";
 import styled from "styled-components/native";

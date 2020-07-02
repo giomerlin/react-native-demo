@@ -1,6 +1,7 @@
 import { Button, ProgressBar, useTheme } from "react-native-paper";
 import { Dimensions, StyleProp, TextStyle } from "react-native";
-import { mixColor, useTimingTransition } from "react-native-redash";
+import { mixColor } from "../../redash/Colors";
+import { useTimingTransition } from "../../redash/Transitions";
 import Animated from "react-native-reanimated";
 import React, { FunctionComponent, PropsWithChildren } from "react";
 import styled from "styled-components/native";
@@ -46,9 +47,9 @@ const StyledButton = styled(Button).attrs({
   border-color: ${({ borderColor }: StyledButtonProps) => borderColor};
 `;
 
-const AnymatedStyledButton = Animated.createAnimatedComponent(StyledButton);
+const AnimatedStyledButton = Animated.createAnimatedComponent(StyledButton);
 
-const AnymatedBackgrounStyledButton: FunctionComponent<StyledButtonProps> = (
+const AnymatedBackgroundStyledButton: FunctionComponent<StyledButtonProps> = (
   props: PropsWithChildren<StyledButtonProps>
 ) => {
   const animateBackground = useTimingTransition(props.selected, {
@@ -58,14 +59,14 @@ const AnymatedBackgrounStyledButton: FunctionComponent<StyledButtonProps> = (
   const baseColor = props.dark ? "black" : "white";
 
   return (
-    <AnymatedStyledButton
+    <AnimatedStyledButton
       style={{
         backgroundColor: mixColor(animateBackground, baseColor, color),
       }}
       {...otherProps}
     >
       {props.children}
-    </AnymatedStyledButton>
+    </AnimatedStyledButton>
   );
 };
 
@@ -88,7 +89,7 @@ const Progress = ({ steps, currentStep, onItemClick }: ProggressProps) => {
       ></ProgressBar>
       <ButtonWrapper>
         {items.map((item: number) => (
-          <AnymatedBackgrounStyledButton
+          <AnymatedBackgroundStyledButton
             key={item}
             onPress={() => {
               if (onItemClick) {
@@ -104,7 +105,7 @@ const Progress = ({ steps, currentStep, onItemClick }: ProggressProps) => {
             color={colors.primary}
           >
             {item}
-          </AnymatedBackgrounStyledButton>
+          </AnymatedBackgroundStyledButton>
         ))}
       </ButtonWrapper>
     </Wrapper>

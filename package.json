@@ -1,13 +1,11 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
+    "start": "react-native start",
     "dev": "node server.js & expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
     "server": "node server.js",
     "web": "expo start --web",
-    "eject": "expo eject",
     "test": "jest"
   },
   "dependencies": {
@@ -20,19 +18,21 @@
     "expo": "38.0.8",
     "expo-constants": "^9.1.1",
     "expo-font": "~8.2.1",
+    "expo-splash-screen": "~0.3.1",
     "expo-status-bar": "^1.0.0",
+    "expo-updates": "~0.2.10",
     "express": "^4.17.1",
     "react": "~16.11.0",
     "react-dom": "~16.11.0",
     "react-fast-compare": "^3.2.0",
     "react-is": "^16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.0.tar.gz",
+    "react-native": "~0.62.2",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-paper": "4.0.0-alpha.1",
-    "react-native-reanimated": "~1.9.0",
-    "react-native-redash": "14.2.1",
+    "react-native-reanimated": "2.0.0-alpha.3",
     "react-native-safe-area-context": "3.0.7",
     "react-native-screens": "~2.9.0",
+    "react-native-unimodules": "~0.10.1",
     "react-native-vector-icons": "^6.6.0",
     "react-native-web": "~0.11.7",
     "react-redux": "^7.2.0",
@@ -57,6 +57,7 @@
     "@typescript-eslint/eslint-plugin": "^3.5.0",
     "@typescript-eslint/parser": "^3.5.0",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "~25.2.6",
     "eslint": "6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-plugin-import": "^2.22.0",
@@ -66,6 +67,7 @@
     "eslint-plugin-react-native": "^3.8.1",
     "eslint-plugin-sort-imports-es6-autofix": "^0.5.0",
     "eslint-plugin-unused-imports": "^0.1.3",
+    "jest": "~25.2.6",
     "jest-expo": "^38.0.2",
     "prettier": "^2.0.5",
     "react-native-testing-library": "^2.1.0",
@@ -73,5 +75,7 @@
     "redux-mock-store": "^1.5.4",
     "typescript": "~3.9.5"
   },
-  "private": true
+  "private": true,
+  "name": "react-native-demo",
+  "version": "1.0.0"
 }
