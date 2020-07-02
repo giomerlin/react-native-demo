@@ -46,9 +46,9 @@ const StyledButton = styled(Button).attrs({
   border-color: ${({ borderColor }: StyledButtonProps) => borderColor};
 `;
 
-const AnymatedStyledButton = Animated.createAnimatedComponent(StyledButton);
+const AnimatedStyledButton = Animated.createAnimatedComponent(StyledButton);
 
-const AnymatedBackgrounStyledButton: FunctionComponent<StyledButtonProps> = (
+const AnimatedBackgroundStyledButton: FunctionComponent<StyledButtonProps> = (
   props: PropsWithChildren<StyledButtonProps>
 ) => {
   const animateBackground = useTimingTransition(props.selected, {
@@ -58,14 +58,14 @@ const AnymatedBackgrounStyledButton: FunctionComponent<StyledButtonProps> = (
   const baseColor = props.dark ? "black" : "white";
 
   return (
-    <AnymatedStyledButton
+    <AnimatedStyledButton
       style={{
         backgroundColor: mixColor(animateBackground, baseColor, color),
       }}
       {...otherProps}
     >
       {props.children}
-    </AnymatedStyledButton>
+    </AnimatedStyledButton>
   );
 };
 
@@ -88,7 +88,7 @@ const Progress = ({ steps, currentStep, onItemClick }: ProggressProps) => {
       ></ProgressBar>
       <ButtonWrapper>
         {items.map((item: number) => (
-          <AnymatedBackgrounStyledButton
+          <AnimatedBackgroundStyledButton
             key={item}
             onPress={() => {
               if (onItemClick) {
@@ -104,7 +104,7 @@ const Progress = ({ steps, currentStep, onItemClick }: ProggressProps) => {
             color={colors.primary}
           >
             {item}
-          </AnymatedBackgrounStyledButton>
+          </AnimatedBackgroundStyledButton>
         ))}
       </ButtonWrapper>
     </Wrapper>
