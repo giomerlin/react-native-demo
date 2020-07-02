@@ -44,13 +44,14 @@ app.get("/api/questions", (req, res) => {
 });
 
 app.post("/api/answers", (req, res) => {
-  console.log("Request", req.body);
-  let r = Math.random();
+  const r = Math.random();
+  let status = 200;
   if (r < 0.4) {
-    res.sendStatus(500);
-  } else {
-    res.sendStatus(200);
+    status = 500;
   }
+  res.sendStatus(status);
+
+  console.log("Request", req.body, `status: ${status}`);
   res.end();
 });
 

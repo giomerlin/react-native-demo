@@ -1,6 +1,29 @@
-import { SafeAreaView, View } from "react-native";
-import { Text, Title } from "react-native-paper";
+import * as actions from "../actions";
+import { AnswerMap, Question } from "../types/state";
+import {
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
+import { RootStackParamList } from "../types";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { Title } from "react-native-paper";
+import {
+  Transition,
+  Transitioning,
+  TransitioningView,
+} from "react-native-reanimated";
+import { getAnswers, getQuestions } from "../reducers";
 import { useDispatch, useSelector } from "react-redux";
+import { useToast } from "../components/toast";
+import Answers from "../components/answers";
+import ButtonPanel from "../components/buttonPanel";
+import ErrorPanel from "../components/error";
+import Loading from "../components/loading";
+import PanelHeader from "../components/panelHeader";
+import Progress from "../components/progress";
 import React, {
   RefObject,
   useCallback,
@@ -8,41 +31,22 @@ import React, {
   useRef,
   useState,
 } from "react";
-
-import * as actions from "../actions";
-import { AnswerMap, Question } from "../types/state";
-import { getAnswers, getQuestions } from "../reducers";
-import Loading from "../components/loading";
-
-import PanelHeader from "../components/panelHeader";
-import Progress from "../components/progress";
-
-import styled from "styled-components/native";
-
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useToast } from "../components/toast";
-import Answers from "../components/answers";
-import ButtonPanel from "../components/buttonPanel";
 import StyledButton from "../components/styledButton";
-
-import { RootStackParamList } from "../types";
-import {
-  Transition,
-  Transitioning,
-  TransitioningView,
-} from "react-native-reanimated";
+import styled from "styled-components/native";
+import withAnimation from "../hocs/withAnimation";
 
 type RootNavigationProp = StackNavigationProp<RootStackParamList, "Root">;
 
-const QuestionTitle = styled(Title)`
+const QuestionTitle = withAnimation(styled(Title)`
   text-align: center;
   margin-top: 20px;
-`;
+`);
 
 const emptyQuestion: Question = {
   id: "",
   answers: [],
 };
+
 const Questions = ({ navigation }: { navigation: RootNavigationProp }) => {
   const questions = useSelector(getQuestions);
   const answersState = useSelector(getAnswers);
@@ -50,10 +54,7 @@ const Questions = ({ navigation }: { navigation: RootNavigationProp }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [loading, setLoading] = useState(true);
   const { addToast } = useToast();
-
-  /* <Transition.In type="slide-left" durationMs={duration} />
-    <Transition.Out type="slide-right" durationMs={duration} />
-  */
+  const [refreshing, setRefreshing] = useState(false);
 
   const duration = 500;
   const transition = (
@@ -98,7 +99,10 @@ const Questions = ({ navigation }: { navigation: RootNavigationProp }) => {
       startTransition();
       setLoading(nextLoading);
     }
-  }, [loading, questions]);
+    if (refreshing && Object.keys(questions || {}).length > 0) {
+      setRefreshing(false);
+    }
+  }, [loading, questions, refreshing]);
 
   useEffect(() => {
     if (answersState?.succeded === true) {
@@ -134,72 +138,100 @@ const Questions = ({ navigation }: { navigation: RootNavigationProp }) => {
     }
   }, [dispatch, answersState?.validated, currentStep, questions?.items]);
 
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    dispatch(actions.resetState());
+  }, [dispatch]);
+
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-      }}
-    >
-      <Transitioning.View
-        transition={transition}
-        ref={transitionRef as RefObject<TransitioningView>}
-        style={{ flex: 1 }}
+    <SafeAreaView style={styles.mainView}>
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        scrollEnabled={questions?.error !== undefined || refreshing}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       >
-        {loading ? (
-          <>
-            {questions?.error ? (
-              <Text>{questions.error}</Text>
-            ) : (
-              <Loading title="Loading..." />
-            )}
-          </>
-        ) : (
-          <View style={{ flex: 1 }}>
-            <PanelHeader
-              title="Question Wizard"
-              subtitle={currentQuestion.subtitle}
-            />
-            <Progress
-              steps={questions?.items?.length || 0}
-              currentStep={currentStep}
-              onItemClick={(step: number) => setCurrentStep(step)}
-            ></Progress>
+        <Transitioning.View
+          transition={transition}
+          ref={transitionRef as RefObject<TransitioningView>}
+          style={styles.fullView}
+        >
+          {loading ? (
+            <>
+              {questions?.error ? (
+                <ErrorPanel
+                  message={questions.error}
+                  detailMessage="Pull down to refresh"
+                />
+              ) : (
+                <Loading title="Loading..." />
+              )}
+            </>
+          ) : (
+            <View style={styles.fullView}>
+              <PanelHeader
+                title="Question Wizard"
+                subtitle={currentQuestion.subtitle}
+              />
+              <Progress
+                steps={questions?.items?.length || 0}
+                currentStep={currentStep}
+                onItemClick={(step: number) => setCurrentStep(step)}
+              ></Progress>
 
-            <QuestionTitle>{currentQuestion.text}</QuestionTitle>
+              <QuestionTitle refKey={`title-${currentQuestion.id}`}>
+                {currentQuestion.text}
+              </QuestionTitle>
 
-            <Answers
-              type="slide-left-right"
-              answers={answers}
-              onAnswerSelected={onSelectedAnswer}
-              selectedAnswer={answerMap[currentQuestion.id]}
-            />
+              <Answers
+                type="slide-left-right"
+                answers={answers}
+                onAnswerSelected={onSelectedAnswer}
+                selectedAnswer={answerMap[currentQuestion.id]}
+              />
 
-            <ButtonPanel>
-              <StyledButton onPress={previousStep} visible={currentStep > 0}>
-                Previous
-              </StyledButton>
+              <ButtonPanel>
+                <StyledButton onPress={previousStep} visible={currentStep > 0}>
+                  Previous
+                </StyledButton>
 
-              <StyledButton
-                onPress={nextStep}
-                disabled={
-                  (currentStep === (questions?.items?.length || 0) - 1 &&
-                    !answersState?.validated) ||
-                  !answerMap[currentQuestion.id]
-                }
-              >
-                {currentStep === (questions?.items?.length || 0) - 1
-                  ? "Finish"
-                  : "Next"}{" "}
-              </StyledButton>
-            </ButtonPanel>
-            {answersState?.loading && (
-              <Loading opacity={0.5} title="Posting Quesions" />
-            )}
-          </View>
-        )}
-      </Transitioning.View>
+                <StyledButton
+                  onPress={nextStep}
+                  disabled={
+                    (currentStep === (questions?.items?.length || 0) - 1 &&
+                      !answersState?.validated) ||
+                    !answerMap[currentQuestion.id]
+                  }
+                >
+                  {currentStep === (questions?.items?.length || 0) - 1
+                    ? "Finish"
+                    : "Next"}{" "}
+                </StyledButton>
+              </ButtonPanel>
+              {answersState?.loading && (
+                <Loading opacity={0.5} title="Posting Quesions" />
+              )}
+            </View>
+          )}
+        </Transitioning.View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  fullView: {
+    flex: 1,
+  },
+  mainView: {
+    flex: 1,
+    marginTop: 20,
+  },
+  scrollView: {
+    flex: 1,
+    position: "relative",
+  },
+});
 
 export default Questions;

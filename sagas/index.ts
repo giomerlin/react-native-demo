@@ -2,6 +2,7 @@ import * as actions from "../actions";
 import {
   GET_ALL_QUESTIONS,
   POST_ANSWERS,
+  Question,
   RESET_STATE,
   SET_ANSWER,
 } from "../types/state";
@@ -29,8 +30,8 @@ export function* validateAnswers() {
   const questions = yield select(getQuestions);
   if (questions.items && questions.items.length > 0) {
     const missing = questions.items
-      .filter((q: any) => !answersMap[q.id])
-      .map((q: any) => q.id);
+      .filter((q: Question) => !answersMap[q.id])
+      .map((q: Question) => q.id);
     yield put(actions.answersValidated(missing));
   }
 }

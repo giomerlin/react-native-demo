@@ -1,7 +1,11 @@
 import { AnswerMap } from "../types/state";
+import { Platform } from "react-native";
 import Constants from "expo-constants";
 
-const API_ROOT = Constants.manifest.extra?.API_ROOT || "/";
+const API_ROOT =
+  (Platform.OS == "android"
+    ? Constants.manifest.extra?.API_ROOT_ANDROID
+    : Constants.manifest.extra?.API_ROOT) || "/";
 
 export const api = {
   getQuestions() {

@@ -1,8 +1,9 @@
-import { Headline } from "react-native-paper";
+import { Headline, useTheme } from "react-native-paper";
 import { RootStackParamList } from "../types";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { resetState } from "../actions";
 import { useDispatch } from "react-redux";
+import AwesomeIcon from "react-native-vector-icons/FontAwesome";
 import React, { useEffect } from "react";
 import styled from "styled-components/native";
 
@@ -19,6 +20,13 @@ const StyledText = styled(Headline)`
   margin-top: 30px;
 `;
 
+const ThankYouIcon = styled(AwesomeIcon).attrs({
+  size: 80,
+  name: "thumbs-up",
+})`
+  color: ${({ iconColor }: { iconColor: string }) => iconColor};
+`;
+
 type ThankYouNavigationProp = StackNavigationProp<
   RootStackParamList,
   "ThankYou"
@@ -30,6 +38,7 @@ const ThankYou = ({
   navigation: ThankYouNavigationProp;
 }): JSX.Element => {
   const dispatch = useDispatch();
+  const { colors } = useTheme();
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
@@ -40,6 +49,7 @@ const ThankYou = ({
 
   return (
     <Wrapper>
+      <ThankYouIcon iconColor={colors.primary} />
       <StyledText>Thank You!</StyledText>
     </Wrapper>
   );

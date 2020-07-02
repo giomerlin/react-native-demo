@@ -9,6 +9,7 @@ import isEqual from "react-fast-compare";
 interface WithAnimationProps {
   type?: "fade" | "scale" | "slide-left-right" | "slide-right-left";
   duration?: number;
+  refKey?: string | number;
 }
 
 type OriginalTransitionType =
@@ -89,14 +90,14 @@ const withAnimation = <P extends object>(
     }
 
     render() {
-      const props = this.props as P;
+      const { refKey, ...props } = this.props;
 
       return (
         <Transitioning.View
           transition={this.state.transition}
           ref={this.transitionRef}
         >
-          <WrappedComponent {...props}></WrappedComponent>
+          <WrappedComponent key={refKey} {...(props as P)}></WrappedComponent>
         </Transitioning.View>
       );
     }
